@@ -17,6 +17,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.TextView;
 
@@ -38,6 +39,7 @@ public class Main extends Activity {
 		public void run() {
 			updateCpu();
 			updateMem();
+			updateConnectivity();
 			mHandler.postDelayed(this, 1000);
 		}
 	};
@@ -72,6 +74,7 @@ public class Main extends Activity {
 		    if (info != null) {
 		    	int connected = 0;
 		        for (int i = 0; i < info.length; i++) {
+	            	// Log.i("PInfo", info[i].getTypeName() + ": " + info[i].getSubtypeName() + " - " + info[i].getDetailedState().name());
 		            if (info[i].getState() == NetworkInfo.State.CONNECTED) {
 		                //Connected to internet
 		            	connected++;
