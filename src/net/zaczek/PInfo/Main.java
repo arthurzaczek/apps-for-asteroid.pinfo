@@ -13,6 +13,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.AudioManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
@@ -26,9 +28,11 @@ public class Main extends Activity {
 	private TextView txtGPS;
 	private TextView txtCPU;
 	private TextView txtMem;
+	private TextView txtNetwork;
 
 	private Handler mHandler = new Handler();
 	private ActivityManager aMgr;
+	private ConnectivityManager connMgr;
 
 	private Runnable mUpdateTimeTask = new Runnable() {
 		public void run() {
@@ -47,15 +51,37 @@ public class Main extends Activity {
 		txtGPS = (TextView) findViewById(R.id.txtGPS);
 		txtCPU = (TextView) findViewById(R.id.txtCPU);
 		txtMem = (TextView) findViewById(R.id.txtMem);
+		txtNetwork = (TextView) findViewById(R.id.txtNetwork);
 
 		aMgr = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
+		connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		initGps();
 		updateGps();
 		updateCpu();
 		updateMem();
-
+		updateConnectivity();
+		
 		mHandler.postDelayed(mUpdateTimeTask, 1000);
+	}
+
+	private void updateConnectivity() {
+		String result = "Network unavailable";
+		if (connMgr != null) {
+		    NetworkInfo[] info = connMgr.getAllNetworkInfo();
+		    if (info != null) {
+		    	int connected = 0;
+		        for (int i = 0; i < info.length; i++) {
+		            if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+		                //Connected to internet
+		            	connected++;
+		            }
+		        }
+		        result = String.format("%d/%d networks connected", connected, info.length);
+		    }
+		}
+		
+		txtNetwork.setText(result);
 	}
 
 	private void updateMem() {
@@ -108,8 +134,6 @@ public class Main extends Activity {
 			// Acquire a reference to the system Location Manager
 			locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
-			// Register the listener with the Location Manager to receive
-			// location updates
 			locationManager.addGpsStatusListener(new GpsStatus.Listener() {
 				@Override
 				public void onGpsStatusChanged(int event) {
@@ -123,10 +147,13 @@ public class Main extends Activity {
 	private void updateGps() {
 		if (status != null) {
 			int n = 0;
+			int max = 0;
 			for (GpsSatellite s : status.getSatellites()) {
-				n++;
+				max++;
+				if(s.usedInFix()) {
+					n++;
+				}
 			}
-			final int max = status.getMaxSatellites();
 			txtGPS.setText(n + "/" + max + " Satellites");
 		} else {
 			txtGPS.setText("no GPS Status");

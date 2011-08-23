@@ -12,5 +12,7 @@
 		android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 	<TextView android:text="TextView" android:id="@+id/txtMem"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+	<TextView android:text="TextView" android:id="@+id/txtNetwork"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 
 </LinearLayout>

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.GpsSatellite;
 import android.location.GpsStatus;
+import android.location.GpsStatus.Listener;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -13,7 +14,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.TextView;
 
-public class Gps extends Activity {
+public class Gps extends Activity implements LocationListener, Listener {
 
 	private LocationManager locationManager;
 	private GpsStatus status = null;
@@ -38,64 +39,63 @@ public class Gps extends Activity {
 		initGps();
 		updateGps();
 	}
-	
+
 	private void initGps() {
 		if (locationManager == null) {
 			// Acquire a reference to the system Location Manager
 			locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
-			locationManager.addGpsStatusListener(new GpsStatus.Listener() {
-				@Override
-				public void onGpsStatusChanged(int event) {
-					status = locationManager.getGpsStatus(status);
-					updateGps();
-				}
-			});
-			
-			locationManager.requestLocationUpdates(
-					LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
-						public void onLocationChanged(Location l) {
-							// Called when a new location is found by the network
-							// location provider.
-							updateGps();
-						}
-
-						public void onStatusChanged(String provider, int status,
-								Bundle extras) {
-						}
-
-						public void onProviderEnabled(String provider) {
-						}
-
-						public void onProviderDisabled(String provider) {
-						}
-					});
+			locationManager.addGpsStatusListener(this);
+			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 		}
+	}
+
+	public void onGpsStatusChanged(int event) {
+		status = locationManager.getGpsStatus(status);
+		updateGps();
+	}
+
+	public void onLocationChanged(Location l) {
+		// Called when a new location is found by the network
+		// location provider.
+		updateGps();
+	}
+
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+	}
+
+	public void onProviderEnabled(String provider) {
+	}
+
+	public void onProviderDisabled(String provider) {
 	}
 
 	private void updateGps() {
 		if (status != null) {
 			int n = 0;
+			int max = 0;
 			for (GpsSatellite s : status.getSatellites()) {
-				n++;
+				max++;
+				if (s.usedInFix()) {
+					n++;
+				}
 			}
-			final int max = status.getMaxSatellites();
 			txtStatus.setText(n + "/" + max + " Satellites");
 		} else {
 			txtStatus.setText("no GPS Status");
 		}
-		
-		if(location != null) {
+
+		if (location != null) {
 			txtSpeed.setText(String.format("%f.0 km/h", location.getSpeed() / 3.6));
 			txtAccuracy.setText(String.format("%f.2 m", location.getAccuracy()));
 			txtAltitude.setText(String.format("%f.2 m", location.getAltitude()));
 		} else {
 			txtSpeed.setText("? km/h");
 			txtAccuracy.setText("? m");
-			txtAltitude.setText("? m");			
+			txtAltitude.setText("? m");
 		}
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		switch (keyCode) {

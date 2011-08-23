@@ -16,4 +16,5 @@
         <activity android:name=".Gps"></activity>
     </application>
   	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 </manifest>
