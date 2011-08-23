@@ -6,13 +6,16 @@ import java.io.RandomAccessFile;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.location.GpsSatellite;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.KeyEvent;
 import android.widget.TextView;
 
 public class Main extends Activity {
@@ -62,7 +65,7 @@ public class Main extends Activity {
 	}
 
 	private void updateCpu() {
-		txtCPU.setText(String.format("%.0f %% CPU", readCpuUsage()));
+		txtCPU.setText(String.format("%.0f %% CPU", readCpuUsage() * 100.0));
 	}
 	
 	// http://stackoverflow.com/questions/3118234/how-to-get-memory-usage-and-cpu-usage-in-android
@@ -127,6 +130,20 @@ public class Main extends Activity {
 			txtGPS.setText(n + "/" + max + " Satellites");
 		} else {
 			txtGPS.setText("no GPS Status");
+		}
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		switch (keyCode) {
+		case KeyEvent.KEYCODE_DPAD_DOWN:
+			startActivity(new Intent(this, Gps.class));
+			return true;
+		case KeyEvent.KEYCODE_DPAD_UP:
+			startActivity(new Intent(this, Gps.class));
+			return true;
+		default:
+			return super.onKeyDown(keyCode, event);
 		}
 	}
 }
