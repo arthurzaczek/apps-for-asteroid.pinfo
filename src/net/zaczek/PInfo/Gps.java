@@ -1,7 +1,6 @@
 package net.zaczek.PInfo;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.location.GpsSatellite;
@@ -56,8 +55,7 @@ public class Gps extends Activity implements LocationListener, Listener {
 	}
 
 	public void onLocationChanged(Location l) {
-		// Called when a new location is found by the network
-		// location provider.
+		location = l;
 		updateGps();
 	}
 

@@ -9,22 +9,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.GpsSatellite;
 import android.location.GpsStatus;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.TextView;
 
 public class Main extends Activity {
 	// GPS Status
 	private LocationManager locationManager;
-	private GpsStatus status = null;
+	private GpsStatus gpsStatus = null;
 
 	private TextView txtGPS;
 	private TextView txtCPU;
@@ -141,7 +137,7 @@ public class Main extends Activity {
 			locationManager.addGpsStatusListener(new GpsStatus.Listener() {
 				@Override
 				public void onGpsStatusChanged(int event) {
-					status = locationManager.getGpsStatus(status);
+					gpsStatus = locationManager.getGpsStatus(gpsStatus);
 					updateGps();
 				}
 			});
@@ -149,10 +145,10 @@ public class Main extends Activity {
 	}
 
 	private void updateGps() {
-		if (status != null) {
+		if (gpsStatus != null) {
 			int n = 0;
 			int max = 0;
-			for (GpsSatellite s : status.getSatellites()) {
+			for (GpsSatellite s : gpsStatus.getSatellites()) {
 				max++;
 				if(s.usedInFix()) {
 					n++;

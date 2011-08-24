@@ -6,21 +6,12 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.KeyEvent;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 
 public class Network extends ListActivity {
 	private ConnectivityManager connMgr;
-	
-	private Handler mHandler = new Handler();
-	private Runnable mUpdateTimeTask = new Runnable() {
-		public void run() {
-			updateConnectivity();
-			mHandler.postDelayed(this, 5000);
-		}
-	};
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,7 +21,7 @@ public class Network extends ListActivity {
         connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         updateConnectivity();
         
-        mHandler.postDelayed(mUpdateTimeTask, 5000);
+        // No refresh - only when fit the screen
     }
 	
 	private void updateConnectivity() {
