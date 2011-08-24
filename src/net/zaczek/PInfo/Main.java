@@ -31,10 +31,11 @@ public class Main extends Activity {
 	private TextView txtMem;
 	private TextView txtNetwork;
 
-	private Handler mHandler = new Handler();
+	
 	private ActivityManager aMgr;
 	private ConnectivityManager connMgr;
 
+	private Handler mHandler = new Handler();
 	private Runnable mUpdateTimeTask = new Runnable() {
 		public void run() {
 			updateCpu();
@@ -170,7 +171,7 @@ public class Main extends Activity {
 			startActivity(new Intent(this, Gps.class));
 			return true;
 		case KeyEvent.KEYCODE_DPAD_UP:
-			startActivity(new Intent(this, Gps.class));
+			startActivity(new Intent(this, Network.class));
 			return true;
 		default:
 			return super.onKeyDown(keyCode, event);

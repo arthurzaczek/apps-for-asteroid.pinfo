@@ -100,7 +100,7 @@ public class Gps extends Activity implements LocationListener, Listener {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_DPAD_DOWN:
-			startActivity(new Intent(this, Main.class));
+			startActivity(new Intent(this, Network.class));
 			return true;
 		case KeyEvent.KEYCODE_DPAD_UP:
 			startActivity(new Intent(this, Main.class));
