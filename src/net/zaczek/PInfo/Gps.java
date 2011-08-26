@@ -9,6 +9,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.widget.TextView;
 
 public class Gps extends Activity implements LocationListener, Listener {
@@ -16,6 +18,8 @@ public class Gps extends Activity implements LocationListener, Listener {
 	private LocationManager locationManager;
 	private GpsStatus status = null;
 	private Location location = null;
+	
+	private WakeLock wl;
 
 	private TextView txtStatus;
 	private TextView txtSpeed;
@@ -27,6 +31,9 @@ public class Gps extends Activity implements LocationListener, Listener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.gps);
+		
+		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "ViewGpsAndStayAwake");
 
 		txtStatus = (TextView) findViewById(R.id.txtStatus);
 		txtSpeed = (TextView) findViewById(R.id.txtSpeed);
@@ -34,6 +41,18 @@ public class Gps extends Activity implements LocationListener, Listener {
 		txtAltitude = (TextView) findViewById(R.id.txtAltitude);
 
 		initGps();
+	}
+	
+	@Override
+	protected void onPause() {
+		wl.release();
+		super.onPause();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		wl.acquire();
 		updateGps();
 	}
 
