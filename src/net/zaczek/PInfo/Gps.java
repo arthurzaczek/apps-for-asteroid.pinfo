@@ -84,9 +84,9 @@ public class Gps extends Activity implements LocationListener, Listener {
 		}
 
 		if (location != null) {
-			txtSpeed.setText(String.format("%f.0 km/h", location.getSpeed() / 3.6));
-			txtAccuracy.setText(String.format("%f.2 m", location.getAccuracy()));
-			txtAltitude.setText(String.format("%f.2 m", location.getAltitude()));
+			txtSpeed.setText(String.format("%.0f km/h", location.getSpeed() * 3.6));
+			txtAccuracy.setText(String.format("%.2f m", location.getAccuracy()));
+			txtAltitude.setText(String.format("%.2f m", location.getAltitude()));
 		} else {
 			txtSpeed.setText("? km/h");
 			txtAccuracy.setText("? m");
