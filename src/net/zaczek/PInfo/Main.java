@@ -15,22 +15,27 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.format.DateUtils;
-import android.text.format.Time;
-import android.view.KeyEvent;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class Main extends ListActivity {
 	// GPS Status
 	private LocationManager locationManager;
 	private GpsStatus gpsStatus = null;
-	
+
 	private ActivityManager aMgr;
 	private ConnectivityManager connMgr;
 	private MainListAdapter adapter;
+	
+	private static final int POS_CPU = 0;
+	private static final int POS_MEM = 1;
+	private static final int POS_GPS = 2;
+	private static final int POS_NETWORK = 3;
+	private static final int POS_MAX = 4;
 
 	private class MainListAdapter extends ArrayAdapter<Object> {
-		
+
 		private Handler mHandler = new Handler();
 		private Runnable mUpdateTimeTask = new Runnable() {
 			public void run() {
@@ -61,17 +66,13 @@ public class Main extends ListActivity {
 		@Override
 		public Object getItem(int position) {
 			switch (position) {
-			case 0:
-				Time t = new Time();
-				t.setToNow();
-				return DateUtils.formatDateTime(getContext(), t.toMillis(false), 0);
-			case 1:
+			case POS_GPS:
 				return gps;
-			case 2:
+			case POS_CPU:
 				return cpu;
-			case 3:
+			case POS_MEM:
 				return mem;
-			case 4:
+			case POS_NETWORK:
 				return network;
 			default:
 				return null;
@@ -80,9 +81,9 @@ public class Main extends ListActivity {
 
 		@Override
 		public int getCount() {
-			return 5;
+			return POS_MAX;
 		}
-		
+
 		private void updateConnectivity() {
 			String result = "Network unavailable";
 			if (connMgr != null) {
@@ -181,7 +182,6 @@ public class Main extends ListActivity {
 		}
 	}
 
-
 	/** Called when the activity is first created. */
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -195,16 +195,14 @@ public class Main extends ListActivity {
 	}
 
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		switch (keyCode) {
-		case KeyEvent.KEYCODE_DPAD_DOWN:
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		switch (position) {
+		case POS_GPS:
 			startActivity(new Intent(this, Gps.class));
-			return true;
-		case KeyEvent.KEYCODE_DPAD_UP:
+			break;
+		case POS_NETWORK:
 			startActivity(new Intent(this, Network.class));
-			return true;
-		default:
-			return super.onKeyDown(keyCode, event);
+			break;
 		}
 	}
 }

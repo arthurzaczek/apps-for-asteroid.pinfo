@@ -2,7 +2,6 @@ package net.zaczek.PInfo;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.location.GpsSatellite;
 import android.location.GpsStatus;
 import android.location.GpsStatus.Listener;
@@ -10,7 +9,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.widget.TextView;
 
 public class Gps extends Activity implements LocationListener, Listener {
@@ -91,20 +89,6 @@ public class Gps extends Activity implements LocationListener, Listener {
 			txtSpeed.setText("? km/h");
 			txtAccuracy.setText("? m");
 			txtAltitude.setText("? m");
-		}
-	}
-
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		switch (keyCode) {
-		case KeyEvent.KEYCODE_DPAD_DOWN:
-			startActivity(new Intent(this, Network.class));
-			return true;
-		case KeyEvent.KEYCODE_DPAD_UP:
-			startActivity(new Intent(this, Main.class));
-			return true;
-		default:
-			return super.onKeyDown(keyCode, event);
 		}
 	}
 }
