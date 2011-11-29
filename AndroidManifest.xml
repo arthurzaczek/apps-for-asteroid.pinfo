@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="net.zaczek.PInfo"
-      android:versionCode="6"
-      android:versionName="1.6">
+      android:versionCode="7"
+      android:versionName="1.7">
     <uses-sdk android:minSdkVersion="3" />
 
     <application android:icon="@drawable/home_icon" android:label="@string/app_name" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
@@ -16,6 +16,9 @@
         </activity>
         <activity android:name=".Gps"></activity>
         <activity android:name=".Network"></activity>
+        <activity android:name=".About"
+                  android:label="About">
+        </activity>
     </application>
   	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>

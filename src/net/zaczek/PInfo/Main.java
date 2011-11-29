@@ -2,7 +2,6 @@ package net.zaczek.PInfo;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
-
 import android.R.layout;
 import android.app.ActivityManager;
 import android.app.ListActivity;
@@ -15,6 +14,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -33,6 +34,9 @@ public class Main extends ListActivity {
 	private static final int POS_GPS = 2;
 	private static final int POS_NETWORK = 3;
 	private static final int POS_MAX = 4;
+	
+	private static final int MENU_ABOUT = 1;
+	private static final int MENU_EXIT = 2;
 
 	private class MainListAdapter extends ArrayAdapter<Object> {
 
@@ -201,5 +205,28 @@ public class Main extends ListActivity {
 			startActivity(new Intent(this, Network.class));
 			break;
 		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		menu.add(0, MENU_ABOUT, 0, "About");
+		menu.add(1, MENU_EXIT, 0, "Exit");
+		return true;
+	}
+
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		int itemId = item.getItemId();
+		switch (itemId) {
+		case MENU_ABOUT:
+			startActivity(new Intent(this, About.class));
+			return true;
+		case MENU_EXIT:
+			finish();
+			return true;
+		}
+
+		return super.onMenuItemSelected(featureId, item);
 	}
 }
