@@ -90,10 +90,7 @@ public class Main extends ListActivity {
 				NetworkInfo[] info = connMgr.getAllNetworkInfo();
 				if (info != null) {
 					int connected = 0;
-					for (int i = 0; i < info.length; i++) {
-						// Log.i("PInfo", info[i].getTypeName() + ": " +
-						// info[i].getSubtypeName() + " - " +
-						// info[i].getDetailedState().name());
+					for (int i = 0; i < info.length; i++) {						
 						if (info[i].getState() == NetworkInfo.State.CONNECTED) {
 							// Connected to internet
 							connected++;
